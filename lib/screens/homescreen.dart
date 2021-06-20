@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutterbookapp/constants/color_constant.dart';
 import 'package:flutterbookapp/models/newbook_model.dart';
+import 'package:flutterbookapp/models/popularbook_model.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutterbookapp/widget/custom_tabindicator.dart';
+
+
+
+
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -16,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: Container(
           child: ListView(
+        physics: BouncingScrollPhysics(),
         children: <Widget>[
           Padding(
               padding: EdgeInsets.only(left: 25, top: 25),
@@ -149,17 +155,76 @@ class _HomeScreenState extends State<HomeScreen> {
                     fontWeight: FontWeight.w600,
                     color: kBlackColor)),
           ),
-          ListView.builder(itemBuilder: (context, index) {
-            return Container(
-              margin: EdgeInsets.only(bottom: 19),
-              height: 81,
-              width: MediaQuery.of(context).size.width - 50,
-              color: kBackgroundColor,
-              child: Row(
-                children: <Widget>[],
-              ),
-            );
-          })
+          ListView.builder(
+              itemCount: populars.length,
+              padding: EdgeInsets.only(top: 25, right: 25, left: 25),
+              physics: BouncingScrollPhysics(),
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    print('List view tapped');
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(bottom: 19),
+                    height: 81,
+                    width: MediaQuery.of(context).size.width - 50,
+                    color: kBackgroundColor,
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          height: 81,
+                          width: 62,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            image: DecorationImage(
+                              image: AssetImage(populars[index].image),
+                            ),
+                            color: kMainColor,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 21,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              populars[index].title,
+                              style: GoogleFonts.openSans(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: kBlackColor,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(populars[index].author,
+                                style: GoogleFonts.openSans(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w400,
+                                  color: kGreyColor,
+                                )),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              '\$' + populars[index].price,
+                              style: GoogleFonts.openSans(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: kBlackColor,
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              })
         ],
       )),
     );
